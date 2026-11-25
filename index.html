@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<title>Болашаққа саяхат – Journey to the Future</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#eaf6fb;
+  --card:rgba(255,255,255,.95);
+  --ink:#14263d;
+  --mut:#51657d;
+  --acc:#00769a;
+  --onacc:#fff;
+  --gold:#fec50c;
+  --line:#c9e0ea;
+  --ok:#12805a;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0e1a2b;
+    --card:rgba(20,34,52,.95);
+    --ink:#eaf2fb;
+    --mut:#a3b5c9;
+    --line:#2c4260;
+    --acc:#4cc9ea;
+    --onacc:#06222c;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0e1a2b;
+  --card:rgba(20,34,52,.95);
+  --ink:#eaf2fb;
+  --mut:#a3b5c9;
+  --line:#2c4260;
+  --acc:#4cc9ea;
+  --onacc:#06222c;
+}
+html,body{
+  height:100%;
+  margin:0;
+  overflow:hidden;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:Montserrat,"Segoe UI",system-ui,Arial,sans-serif;
+}
+canvas{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  display:block;
+  touch-action:none;
+}
+.b{
+  font:600 14px Montserrat,system-ui,sans-serif;
+  border:2px solid var(--line);
+  background:var(--card);
+  color:var(--ink);
+  padding:10px 14px;
+  border-radius:14px;
+  cursor:pointer;
+  min-height:44px;
+  transition:border-color .15s, background-color .15s;
+}
+.b:hover,.b:focus-visible{
+  border-color:var(--acc);
+  outline:none;
+}
+.b:focus-visible{
+  box-shadow:0 0 0 3px var(--gold);
+}
+.b.p{
+  background:var(--acc);
+  border-color:var(--acc);
+  color:var(--onacc);
+}
+.b.on{
+  background:var(--gold);
+  border-color:var(--gold);
+  color:#222;
+}
+#top{
+  position:fixed;
+  left:10px;
+  right:10px;
+  top:calc(10px + env(safe-area-inset-top,0px));
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  align-items:center;
+  pointer-events:none;
+}
+#top>*{
+  pointer-events:auto;
+}
+#ttl{
+  background:var(--card);
+  border:2px solid var(--line);
+  border-radius:14px;
+  padding:6px 14px;
+  font-weight:800;
+  font-size:17px;
+}
+#ttl small{
+  display:block;
+  font-weight:400;
+  color:var(--mut);
+  font-size:11px;
+}
+#bar{
+  position:fixed;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:calc(10px + env(safe-area-inset-bottom,0px));
+  width:min(980px,calc(100% - 20px));
+  background:var(--card);
+  border:2px solid var(--line);
+  border-radius:18px;
+  padding:8px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+#bar .r{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  justify-content:center;
+  align-items:center;
+}
+#bar.c .r:not(.h){
+  display:none;
+}
+#hint{
+  font-size:11px;
+  color:var(--mut);
+  flex:1;
+  min-width:180px;
+}
+#panel{
+  position:fixed;
+  right:10px;
+  top:calc(76px + env(safe-area-inset-top,0px));
+  width:min(410px,calc(100% - 20px));
+  max-height:calc(100% - 220px);
+  overflow:auto;
+  background:var(--card);
+  border:2px solid var(--line);
+  border-radius:18px;
+  padding:16px;
+  display:none;
+  box-shadow:0 10px 30px rgba(0,0,0,.18);
+}
+#panel.o{
+  display:block;
+}
+#panel h2{
+  margin:0 0 8px;
+  font-size:19px;
+  line-height:1.25;
+}
+#panel h3{
+  margin:14px 0 4px;
+  font-size:14px;
+}
+#panel ul{
+  padding-left:18px;
+  line-height:1.55;
+  font-size:14px;
+  margin:6px 0;
+}
+#panel p{
+  font-size:14px;
+  margin:4px 0;
+}
+.tk{
+  background:#fff1bd;
+  color:#4a3800;
+  border-radius:12px;
+  padding:10px;
+  font-size:14px;
+  margin:8px 0;
+}
+textarea{
+  width:100%;
+  box-sizing:border-box;
+  border:2px solid var(--line);
+  border-radius:12px;
+  background:var(--bg);
+  color:var(--ink);
+  font:inherit;
+  font-size:14px;
+  padding:8px;
+  margin-bottom:6px;
+}
+#intro{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(10,40,60,.5);
+  padding:12px;
+  overflow:auto;
+  z-index:9;
+}
+#intro .card{
+  background:var(--card);
+  border-radius:22px;
+  padding:24px;
+  max-width:600px;
+  max-height:100%;
+  overflow:auto;
+  border:2px solid var(--line);
+}
+#intro h1{
+  margin:0;
+  font-size:28px;
+  font-weight:800;
+}
+#intro h3{
+  margin:16px 0 4px;
+}
+#intro p,#intro li{
+  line-height:1.55;
+  font-size:14px;
+}
+.m{
+  color:var(--mut);
+}
+#joy{
+  position:fixed;
+  left:22px;
+  bottom:calc(160px + env(safe-area-inset-bottom,0px));
+  width:110px;
+  height:110px;
+  border-radius:50%;
+  background:rgba(255,255,255,.45);
+  border:2px solid var(--line);
+  display:none;
+  touch-action:none;
+}
+#joy i{
+  position:absolute;
+  left:35px;
+  top:35px;
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  background:var(--acc);
+  opacity:.85;
+}
+@media (pointer:coarse){
+  #joy{display:block}
+}
+#toast{
+  position:fixed;
+  left:50%;
+  top:calc(84px + env(safe-area-inset-top,0px));
+  transform:translateX(-50%);
+  background:#14263d;
+  color:#fff;
+  padding:10px 16px;
+  border-radius:12px;
+  font-size:13px;
+  opacity:0;
+  transition:opacity .3s;
+  pointer-events:none;
+  max-width:90%;
+  z-index:10;
+  text-align:center;
+}
+#toast.s{
+  opacity:1;
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important}
+}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<!-- Жоғарғы панель: тақырып, тіл және XR батырмалары -->
+<div id="top">
+  <div id="ttl"><span data-k="title"></span><small data-k="sub"></small></div>
+  <button class="b" id="bL"></button>
+  <button class="b" id="bVR" data-k="vr"></button>
+  <button class="b" id="bAR" data-k="ar"></button>
+</div>
+
+<!-- Ақпараттық карточка панелі -->
+<div id="panel"></div>
+
+<!-- Сенсорлық экрандарға арналған джойстик -->
+<div id="joy"><i></i></div>
+
+<!-- Хабарламалар терезесі -->
+<div id="toast"></div>
+
+<!-- Төменгі навигация панелі: тек бағыттаушы кеңес және бекеттер тізімі қалдырылды -->
+<div id="bar">
+  <div class="r h">
+    <button class="b" id="bTg" aria-label="HUD">▾</button>
+    <span id="hint"></span>
+  </div>
+  <div class="r" id="chips"></div>
+</div>
+
+<!-- Кіріспе терезесі -->
+<div id="intro"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(()=>{
+'use strict';
+if(!window.THREE){
+  document.body.innerHTML='<p style="padding:24px">Three.js жүктелмеді. Интернет байланысын тексеріп, бетті қайта жүктеңіз.</p>';
+  return;
+}
+const T3=THREE, $=s=>document.querySelector(s);
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ========== МӘТІНДЕР (Қазақша / Ағылшынша) ========== */
+const L={
+  kk:{
+    title:'Болашаққа саяхат',
+    sub:'«Болашаққа саяхат» – цифрлық танымдық саяхат',
+    intro:'Таныстыру',
+    vr:'VR режимі',
+    ar:'AR режимі',
+    start:'Саяхатты бастау',
+    goalH:'Мақсаты',
+    goal:'балаларға Қазақстанның табиғатын, мәдениетін, көрікті жерлері мен ғарыш саласындағы жетістіктерін қызықты түрде таныстыру.',
+    objH:'Саяхат нысандары',
+    hint:'WASD – жүру · көрсеткілер – жүру/бұрылу · тінтуірді сүйреу – қарау · нысанды немесе төмендегі бекетті басыңыз',
+    takeaway:'Негізгі ой',
+    share:'Әсерімізбен бөлісу',
+    reflect:'Не байқадың? Әсеріңді жаз:',
+    send:'Бөлісу',
+    noXR:'Бұл құрылғыда немесе браузерде WebXR қолжетімсіз. Қалыпты 3D режимін қолданыңыз.',
+    saved:'Рахмет! Әсерің сақталды.'
+  },
+  en:{
+    title:'Journey to the Future',
+    sub:'“Journey to the Future” – a digital cognitive journey',
+    intro:'Introduce',
+    vr:'Enter VR',
+    ar:'Enter AR',
+    start:'Start the journey',
+    goalH:'Goal',
+    goal:'to introduce children to Kazakhstan’s nature, culture, landmarks and achievements in space exploration in an engaging way.',
+    objH:'Journey stops',
+    hint:'WASD – walk · arrows – walk/turn · drag mouse – look · click a 3D object or station below',
+    takeaway:'Key idea',
+    share:'Share our impressions',
+    reflect:'What did you notice? Write your impression:',
+    send:'Share',
+    noXR:'WebXR is not available on this device or browser. Use the standard 3D mode.',
+    saved:'Thank you! Your impression is saved.'
+  }
+};
+let lang='kk';
+
+/* ========== БЕКЕТТЕР ДЕРЕКТЕРІ (Тест сұрақтары алынып тасталды) ========== */
+const S=[
+  {
+    c:0xffb703, ic:'🏛️', h:9,
+    kk:{
+      n:'Астана',
+      t:'Астананың көрікті жерлері',
+      f:[
+        'Байтерек – биіктігі 97 метр мұнара. 97 саны елорданың 1997 жылы Астанаға көшкенін еске салады.',
+        '«Хан шатыры» – әлемдегі ең ірі шатыр тәрізді ғимараттардың бірі, биіктігі шамамен 150 метр.',
+        'Диаметрі 80 метр «Нұр Әлем» сферасы – EXPO-2017 көрмесінің символы.'
+      ],
+      k:'Астана – дәстүр мен болашақты біріктірген қала.'
+    },
+    en:{
+      n:'Astana',
+      t:'Landmarks of Astana',
+      f:[
+        'Baiterek is a 97 m tower; 97 recalls 1997, when the capital moved to Astana.',
+        'Khan Shatyr is one of the world’s largest tent-shaped buildings, about 150 m tall.',
+        'The Nur Alem sphere, 80 m wide, was the symbol of EXPO 2017.'
+      ],
+      k:'Astana joins tradition with the future.'
+    }
+  },
+  {
+    c:0x2ba8e8, ic:'🏔️', h:6,
+    kk:{
+      n:'Таулар мен көлдер',
+      t:'Қазақстанның таулары мен көлдері',
+      f:[
+        'Тянь-Шань мен Алтай – біздің таулы өңірлеріміз; Хан Тәңірі шыңы 7010 метрге жетеді.',
+        'Үлкен Алматы көлі теңіз деңгейінен шамамен 2500 метр биіктікте жатыр.',
+        'Шарын шатқалының қызыл жартастары «Қамалдар аңғарын» құрайды.'
+      ],
+      k:'Табиғатты қорғау – баршамыздың міндетіміз.'
+    },
+    en:{
+      n:'Mountains & lakes',
+      t:'Mountains & Lakes of Kazakhstan',
+      f:[
+        'The Tian Shan and Altai are our mountain regions; Khan Tengri peak reaches 7,010 m.',
+        'Big Almaty Lake lies about 2,500 m above sea level.',
+        'The red rocks of Charyn Canyon form the “Valley of Castles”.'
+      ],
+      k:'Protecting nature is everyone’s job.'
+    }
+  },
+  {
+    c:0x2fd3a8, ic:'🛖', h:4,
+    kk:{
+      n:'Мәдени мұра',
+      t:'Ұлттық мәдени мұралар',
+      f:[
+        'Киіз үй – көшпенділердің қозғалмалы үйі: қабырғасы – кереге, төбесі – уық пен шаңырақ.',
+        'Шаңырақ – отбасы мен береке символы, ол Қазақстан елтаңбасында да бейнеленген.',
+        'Түркістандағы Қожа Ахмет Яссауи кесенесі – ЮНЕСКО-ның Бүкіләлемдік мұра тізімінде.'
+      ],
+      k:'Мұра – өткенімізбен болашағымызды байланыстырады.'
+    },
+    en:{
+      n:'Heritage',
+      t:'National Cultural Heritage',
+      f:[
+        'The yurt was a portable nomad home: lattice walls (kerege), roof poles (uyk) and a crown ring (shanyrak).',
+        'The shanyrak symbolizes family and prosperity and appears on Kazakhstan’s coat of arms.',
+        'The Mausoleum of Khoja Ahmed Yasawi in Turkistan is a UNESCO World Heritage Site.'
+      ],
+      k:'Heritage links our past with our future.'
+    }
+  },
+  {
+    c:0xff6b6b, ic:'🚀', h:8,
+    kk:{
+      n:'Ғарыш',
+      t:'Ғарыш әлемі',
+      f:[
+        'Байқоңыр – әлемдегі алғашқы әрі ең ірі ғарыш айлағы, Қызылорда облысында орналасқан.',
+        '1961 жылы 12 сәуірде Юрий Гагарин Байқоңырдан ғарышқа ұшты.',
+        '1991 жылы Тоқтар Әубәкіров – Қазақстаннан шыққан алғашқы ғарышкер болды.'
+      ],
+      k:'Ғарышқа жол – білімнен басталады.'
+    },
+    en:{
+      n:'Space',
+      t:'Space World',
+      f:[
+        'Baikonur, in Kyzylorda region, is the world’s first and largest space launch site.',
+        'On 12 April 1961 Yuri Gagarin launched into space from Baikonur.',
+        'In 1991 Toktar Aubakirov became the first cosmonaut from Kazakhstan.'
+      ],
+      k:'The road to space begins with knowledge.'
+    }
+  },
+  {
+    c:0xb39ddb, ic:'🏙️', h:6,
+    kk:{
+      n:'Қалалар',
+      t:'Қазақстан қалалары және басқалар',
+      f:[
+        'Алматы – ең ірі қала, Іле Алатауының баурайында орналасқан.',
+        'Шымкент – оңтүстіктің үлкен мәдени әрі сауда орталығы.',
+        'Ақтау – Каспий теңізінің жағасындағы қала, ал Түркістан – түркі әлемінің рухани орталығы.'
+      ],
+      k:'Әр қаланың өз тарихы мен сұлулығы бар.'
+    },
+    en:{
+      n:'Cities',
+      t:'Cities of Kazakhstan & More',
+      f:[
+        'Almaty is the largest city, set at the foot of the Trans-Ili Alatau mountains.',
+        'Shymkent is a big cultural and trade centre of the south.',
+        'Aktau stands on the Caspian Sea coast, and Turkistan is the spiritual centre of the Turkic world.'
+      ],
+      k:'Every city has its own story and beauty.'
+    }
+  }
+];
+const N=S.length, RAD=26, COL=11;
+
+/* ========== 3D САХНА ЖӘНЕ РЕНДЕРЕР ========== */
+const R=new T3.WebGLRenderer({canvas:$('#c'),antialias:true,alpha:true});
+R.setPixelRatio(Math.min(devicePixelRatio||1,2));
+R.xr.enabled=true;
+
+const scene=new T3.Scene(), fog=new T3.Fog(0xd4ecfa,70,190);
+scene.fog=fog;
+
+const cam=new T3.PerspectiveCamera(70,1,.05,500);
+cam.position.y=1.65;
+
+const rig=new T3.Group();
+rig.add(cam);
+scene.add(rig);
+
+const world=new T3.Group();
+scene.add(world);
+
+function rs(){
+  R.setSize(innerWidth,innerHeight,false);
+  cam.aspect=innerWidth/innerHeight;
+  cam.updateProjectionMatrix();
+}
+addEventListener('resize',rs);
+rs();
+
+const mesh=(g,c,x,y,z,p,e)=>{
+  const m=new T3.Mesh(g,new T3.MeshLambertMaterial({color:c,emissive:e||0}));
+  m.position.set(x,y,z);
+  p.add(m);
+  return m;
+};
+const cyl=(a,b,h,n=24)=>new T3.CylinderGeometry(a,b,h,n),
+      sph=(r)=>new T3.SphereGeometry(r,24,16),
+      box=(w,h,d)=>new T3.BoxGeometry(w,h,d),
+      con=(r,h,n=24)=>new T3.ConeGeometry(r,h,n),
+      tor=(r,t)=>new T3.TorusGeometry(r,t,12,40);
+const flat=m=>{m.rotation.x=-Math.PI/2;return m},
+      glass=(m,o)=>{m.material.transparent=true;m.material.opacity=o;return m};
+const rnd=(()=>{let s=7;return()=>(s=s*16807%2147483647)/2147483647})();
+
+// Аспан күмбезі, жарық және жер жазықтығы
+const gc=document.createElement('canvas');gc.width=2;gc.height=256;
+const gx=gc.getContext('2d'),gr=gx.createLinearGradient(0,0,0,256);
+gr.addColorStop(0,'#4aa9ee');gr.addColorStop(.55,'#a9dcff');gr.addColorStop(1,'#eef9ff');
+gx.fillStyle=gr;gx.fillRect(0,0,2,256);
+
+const sky=new T3.Mesh(sph(300),new T3.MeshBasicMaterial({map:new T3.CanvasTexture(gc),side:T3.BackSide,fog:false,depthWrite:false}));
+world.add(sky);
+world.add(new T3.HemisphereLight(0xffffff,0x80c080,.95));
+const sun=new T3.DirectionalLight(0xffffff,.7);sun.position.set(30,50,20);world.add(sun);
+const ground=flat(mesh(new T3.CircleGeometry(75,48),0x93d49a,0,0,0,world));
+flat(mesh(new T3.CircleGeometry(7,40),0xfff1c9,0,.02,0,world));
+
+// Орталық алаңдағы Қазақстан туы
+mesh(cyl(.08,.08,7,8),0xdddddd,0,3.5,0,world);
+const fl=mesh(new T3.PlaneGeometry(3,1.8),0x00afca,1.5,6,0,world);
+fl.material.side=T3.DoubleSide;
+mesh(new T3.CircleGeometry(.45,24),0xfec50c,1.5,6,.01,world).material.side=T3.DoubleSide;
+
+// Бұлттар
+for(let k=0;k<8;k++){
+  const a=k*.8,d=80+rnd()*40,c=new T3.Group();
+  c.position.set(Math.sin(a)*d,40+rnd()*20,-Math.cos(a)*d);
+  for(let j=0;j<4;j++)glass(mesh(sph(5+rnd()*4),0xffffff,j*6-9,rnd()*2,rnd()*3,c),.85);
+  world.add(c);
+}
+
+/* ========== 3D НЫСАНДАР МОДЕЛЬДЕРІ ========== */
+const astana=g=>{
+  mesh(cyl(3.2,3.6,1),0xe8eef5,0,.5,0,g);
+  mesh(cyl(.7,1.7,14),0xf4f7fb,0,8,0,g);
+  mesh(tor(2.4,.25),0xffb703,0,10,0,g).rotation.x=Math.PI/2;
+  mesh(sph(2.6),0xffc933,0,16.6,0,g,0x553d00);
+  mesh(con(.5,4),0xffb703,0,20.6,0,g);
+  mesh(cyl(1.5,2.4,.8),0xdde6ee,-8.5,.4,3,g);
+  glass(mesh(sph(3.2),0x9fe0ff,-8.5,3.8,3,g,0x0a3a55),.85);
+  mesh(cyl(4.6,4.6,.6),0xdde6ee,8.5,.3,3,g);
+  mesh(con(4.3,9),0xf2f6ff,8.5,5,3,g);
+  mesh(con(.25,3),0xffb703,8.5,11.2,3,g);
+};
+
+const mount=g=>{
+  mesh(con(7,12,6),0x7a8aa0,-3.5,6,-3,g);
+  mesh(con(2.9,5,6),0xffffff,-3.5,9.5,-3,g);
+  mesh(con(5,8,6),0x8a9bb0,5,4,-3,g);
+  mesh(con(2.1,3.3,6),0xffffff,5,6.35,-3,g);
+  flat(mesh(new T3.CircleGeometry(5,40),0x2ba8e8,0,.06,4,g));
+  [[9,3],[9.4,5.4],[8.6,7.6]].forEach((p,k)=>mesh(box(2,[3,5,3.6][k],2),0xd4693a,p[0],[1.5,2.5,1.8][k],p[1]-1,g));
+  for(let k=0,n=0;k<80&&n<14;k++){
+    const x=(rnd()-.5)*20,z=-1+rnd()*10;
+    if(Math.hypot(x,z-4)<6||Math.abs(x)>10||x>6&&z<8)continue;
+    n++;
+    mesh(cyl(.15,.2,.8,6),0x6b4a2b,x,.4,z,g);
+    mesh(con(1.1,3.2,8),0x1f7a4a,x,2.3,z,g);
+  }
+};
+
+const heritage=g=>{
+  mesh(cyl(4,4,3),0xf6edd9,0,1.5,0,g);
+  const d=mesh(new T3.SphereGeometry(4.1,28,12,0,Math.PI*2,0,Math.PI/2),0xffffff,0,3,0,g);
+  d.scale.y=.6;
+  mesh(tor(1,.14),0xffb703,0,5.35,0,g).rotation.x=Math.PI/2;
+  mesh(cyl(4.05,4.05,.7),0x00afca,0,2.4,0,g);
+  mesh(box(1.5,2.2,.25),0x7a4a22,0,1.1,4,g);
+  for(let k=0;k<20;k++){
+    const a=k/20*6.283,m=mesh(box(.35,.35,.12),0xffb703,Math.sin(a)*4.1,2.4,Math.cos(a)*4.1,g);
+    m.rotation.y=a;m.rotation.z=.785;
+  }
+  mesh(box(4,4.2,4),0xd9c7a1,-8,2.1,-2,g);
+  mesh(new T3.SphereGeometry(2.3,20,10,0,Math.PI*2,0,Math.PI/2),0x1fa8a0,-8,4.2,-2,g);
+  mesh(con(.2,1.2),0xffb703,-8,6.9,-2,g);
+  mesh(box(.9,4,.9),0x9a9a92,8,2,-2,g);
+};
+
+const space=g=>{
+  mesh(cyl(4,4.4,.8),0x8b97a6,0,.4,0,g);
+  mesh(cyl(1.2,1.2,8),0xffffff,0,4.8,0,g);
+  mesh(cyl(1.22,1.22,1.2),0xe63946,0,3.2,0,g);
+  mesh(con(1.2,3),0xe63946,0,10.3,0,g);
+  for(let k=0;k<3;k++){
+    const a=k*2.094,f=mesh(box(.2,2.2,1.6),0xe63946,Math.sin(a)*1.5,1.9,Math.cos(a)*1.5,g);
+    f.rotation.y=a;
+  }
+  mesh(box(.6,11,.6),0xff8c42,-3.4,6.3,0,g);
+  [3,6,9].forEach(y=>mesh(box(2.2,.2,.3),0xff8c42,-2.3,y,0,g));
+  const o=new T3.Group();o.position.y=14;g.add(o);
+  const p1=mesh(sph(1.3),0xff8c42,7,0,0,o),p2=mesh(sph(.9),0x4aa9ee,-5,0,0,o);
+  mesh(tor(1.5,.1),0xffd166,-5,0,0,o).rotation.x=1.2;
+  const st=new T3.Group();st.position.set(0,2,-6);o.add(st);
+  mesh(box(.8,.5,.5),0xdddddd,0,0,0,st);
+  mesh(box(2.2,.05,.9),0x3b6ea8,-1.5,0,0,st);
+  mesh(box(2.2,.05,.9),0x3b6ea8,1.5,0,0,st);
+  const pts=[];for(let k=0;k<60;k++)pts.push((rnd()-.5)*22,8+rnd()*12,(rnd()-.5)*22);
+  const sg=new T3.BufferGeometry();sg.setAttribute('position',new T3.Float32BufferAttribute(pts,3));
+  g.add(new T3.Points(sg,new T3.PointsMaterial({color:0xffd23f,size:.7})));
+  g.userData.tick=t=>{o.rotation.y=t*.4;p1.rotation.y=t;p2.rotation.y=t*.7};
+};
+
+const cities=g=>{
+  const cs=[0x7fa8ff,0xff9ecb,0xffd166,0x8ee3c5,0xb39ddb];
+  for(let k=0;k<11;k++){
+    const h=3+rnd()*9;
+    mesh(box(1.6,h,1.6),cs[k%5],-10+k*2,h/2,-3,g,0x101826);
+  }
+  mesh(cyl(.2,.5,16,10),0xe8e8f0,9,8,4,g);
+  mesh(sph(.9),0xff6b6b,9,12.5,4,g);
+  mesh(box(18,.2,5),0x3aa0e0,0,.1,6,g);
+  mesh(box(2,.5,.8),0x7a4a22,-3,.5,6,g);
+  mesh(con(.9,3,3),0xffffff,-3,2.2,6,g);
+  const nd=[0xff6b6b,0xffd166,0x06d6a0].map((c,k)=>mesh(sph(.6),c,-6+k*6,12,-3,g,0x333333));
+  g.userData.tick=t=>nd.forEach((m,k)=>m.position.y=12+Math.sin(t*2+k)*.6);
+};
+const B=[astana,mount,heritage,space,cities];
+
+/* ========== БЕКЕТТЕРДІ ОРНАЛАСТЫРУ ========== */
+const labels=[], tick=[];
+function drawLab(s){
+  const x=s.cv.getContext('2d'),w=512;
+  x.fillStyle='#fff';x.fillRect(0,0,w,200);
+  x.fillStyle='#'+s.c.toString(16).padStart(6,'0');
+  x.fillRect(0,124,w,76);x.fillRect(0,0,w,10);
+  x.textAlign='center';x.fillStyle='#14263d';
+  x.font='800 30px Montserrat,Arial,sans-serif';
+  x.fillText(s[lang].n,w/2,78,480);
+  x.font='700 34px Montserrat,Arial,sans-serif';
+  x.fillText('▶ '+L[lang].intro,w/2,176,480);
+  s.tx.needsUpdate=true;
+}
+
+S.forEach((s,i)=>{
+  const a=i/N*Math.PI*2,g=new T3.Group();
+  g.position.set(Math.sin(a)*RAD,0,-Math.cos(a)*RAD);
+  g.rotation.y=-a;
+  g.userData.i=i;
+  s.g=g;
+  world.add(g);
+  B[i](g);
+  if(g.userData.tick)tick.push(g.userData.tick);
+
+  s.disc=glass(flat(mesh(new T3.CircleGeometry(10,40),s.c,0,.03,0,g)),.25);
+  s.ring=new T3.Mesh(new T3.TorusGeometry(10.4,.18,8,64),new T3.MeshBasicMaterial({color:s.c}));
+  s.ring.rotation.x=Math.PI/2;
+  s.ring.position.y=.2;
+  s.ring.visible=false;
+  g.add(s.ring);
+
+  mesh(cyl(.5,.7,1.4),s.c,7,.7,11,g,0x222222);
+  s.cv=document.createElement('canvas');s.cv.width=512;s.cv.height=200;
+  s.tx=new T3.CanvasTexture(s.cv);
+  const lb=new T3.Mesh(new T3.PlaneGeometry(6,2.34),new T3.MeshBasicMaterial({map:s.tx,transparent:true,side:T3.DoubleSide}));
+  lb.position.set(7,3.2,11);
+  lb.userData.btn=i;
+  g.add(lb);
+  labels.push(lb);
+  s.lb=lb;
+  drawLab(s);
+});
+document.fonts&&document.fonts.ready.then(()=>S.forEach(drawLab));
+
+for(let k=0;k<2;k++){
+  const c=R.xr.getController(k);
+  c.add(new T3.Line(new T3.BufferGeometry().setFromPoints([new T3.Vector3(),new T3.Vector3(0,0,-6)]),new T3.LineBasicMaterial({color:0xffb703})));
+  c.addEventListener('select',()=>xrSel(c));
+  rig.add(c);
+}
+
+/* ========== ҚОЗҒАЛЫС ЖӘНЕ КАМЕРА БАСҚАРУЫ ========== */
+let yaw=0, pitch=0, cur=-1, tw=null, inXR=false, ar=false, jx=0, jz=0;
+const keys={}, notes={};
+rig.position.set(0,0,9);
+
+const clampPos=(x,z)=>{
+  let r=Math.hypot(x,z);
+  if(r>62){x*=62/r;z*=62/r;}
+  for(const s of S){
+    const dx=x-s.g.position.x,dz=z-s.g.position.z,d=Math.hypot(dx,dz)||1;
+    if(d<COL){x=s.g.position.x+dx/d*COL;z=s.g.position.z+dz/d*COL;}
+  }
+  r=Math.hypot(x,z);
+  if(r<1.2){x=r?x*1.2/r:1.2;z=r?z*1.2/r:0;}
+  return[x,z];
+};
+
+function userMove(){
+  tw=null;
+}
+
+function move(dt){
+  let fx=jx,fz=jz;
+  if(keys.KeyW||keys.ArrowUp)fz++;
+  if(keys.KeyS||keys.ArrowDown)fz--;
+  if(keys.KeyD)fx++;
+  if(keys.KeyA)fx--;
+  if(keys.ArrowLeft)yaw+=1.8*dt;
+  if(keys.ArrowRight)yaw-=1.8*dt;
+  const l=Math.hypot(fx,fz);
+  if(!l)return;
+  const m=Math.min(1,l)*(keys.ShiftLeft?9:5)*dt,sy=Math.sin(yaw),cy=Math.cos(yaw);
+  fx/=l;fz/=l;
+  let x=rig.position.x+(-sy*fz+cy*fx)*m,z=rig.position.z+(-cy*fz-sy*fx)*m;
+  [x,z]=clampPos(x,z);
+  rig.position.x=x;
+  rig.position.z=z;
+}
+
+function flyTo(i){
+  const s=S[i],p=s.g.position,l=Math.hypot(p.x,p.z),dx=p.x/l*18,dz=p.z/l*18,vx=p.x-dx,vz=p.z-dz;
+  let ty=Math.atan2(-dx,-dz);
+  const d=((ty-yaw+Math.PI)%(2*Math.PI)+2*Math.PI)%(2*Math.PI)-Math.PI;
+  ty=yaw+d;
+  if(R.xr.isPresenting){
+    rig.position.set(vx,0,vz);
+    yaw=ty;
+    return;
+  }
+  tw={t:0,d:1.8,x0:rig.position.x,z0:rig.position.z,y0:yaw,p0:pitch,x1:vx,z1:vz,y1:ty,p1:Math.atan2(s.h-1.65,18)};
+}
+
+function stepTw(dt){
+  if(!tw)return;
+  tw.t+=dt;
+  const k=Math.min(1,tw.t/tw.d),e=k*k*(3-2*k),m=(a,b)=>a+(b-a)*e;
+  rig.position.x=m(tw.x0,tw.x1);
+  rig.position.z=m(tw.z0,tw.z1);
+  yaw=m(tw.y0,tw.y1);
+  pitch=m(tw.p0,tw.p1);
+  if(k>=1)tw=null;
+}
+
+/* ========== ПЕРНЕТАҚТА, ТІНТУІР ЖӘНЕ ДЖОЙСТИК ========== */
+addEventListener('keydown',e=>{
+  if(/TEXTAREA|INPUT/.test(e.target.tagName))return;
+  keys[e.code]=1;
+  if(/^(Key[WASD]|Arrow)/.test(e.code)){
+    userMove();
+    e.preventDefault();
+  }
+});
+addEventListener('keyup',e=>{keys[e.code]=0});
+
+const cv=$('#c'),rc=new T3.Raycaster(),v3=new T3.Vector3(),tmp=new T3.Matrix4();
+let dr=null;
+
+cv.addEventListener('pointerdown',e=>{
+  dr={x:e.clientX,y:e.clientY,m:0};
+  cv.setPointerCapture(e.pointerId);
+});
+cv.addEventListener('pointermove',e=>{
+  if(!dr)return;
+  const dx=e.clientX-dr.x,dy=e.clientY-dr.y;
+  dr.x=e.clientX;dr.y=e.clientY;
+  dr.m+=Math.abs(dx)+Math.abs(dy);
+  if(dr.m>6){
+    userMove();
+    yaw+=dx*.005;
+    pitch=Math.max(-1.2,Math.min(1.2,pitch+dy*.005));
+  }
+});
+cv.addEventListener('pointerup',e=>{
+  if(dr&&dr.m<=6)pick(e);
+  dr=null;
+});
+cv.addEventListener('pointercancel',()=>{dr=null});
+
+function pick(e){
+  rc.setFromCamera({x:e.clientX/innerWidth*2-1,y:-e.clientY/innerHeight*2+1},cam);
+  let h=rc.intersectObjects(labels)[0];
+  if(h){go(h.object.userData.btn);return;}
+  h=rc.intersectObjects(S.map(s=>s.g),true)[0];
+  if(!h)return;
+  let o=h.object;
+  while(o&&o.userData.i===undefined)o=o.parent;
+  if(o)go(o.userData.i);
+}
+
+const joy=$('#joy'),kn=joy.firstElementChild;
+let jid=null;
+const jm=e=>{
+  const r=joy.getBoundingClientRect();
+  let dx=e.clientX-r.left-55,dy=e.clientY-r.top-55;
+  const l=Math.hypot(dx,dy);
+  if(l>40){dx*=40/l;dy*=40/l;}
+  kn.style.transform='translate('+dx+'px,'+dy+'px)';
+  jx=dx/40;jz=-dy/40;
+};
+joy.addEventListener('pointerdown',e=>{
+  jid=e.pointerId;
+  joy.setPointerCapture(jid);
+  userMove();
+  jm(e);
+});
+joy.addEventListener('pointermove',e=>{if(e.pointerId===jid)jm(e)});
+const je=e=>{if(e.pointerId===jid){jid=null;jx=jz=0;kn.style.transform=''}};
+joy.addEventListener('pointerup',je);
+joy.addEventListener('pointercancel',je);
+
+/* ========== НЫСАН АҚПАРАТЫН КӨРСЕТУ (ТЕСТСІЗ) ========== */
+function toast(m){
+  const t=$('#toast');
+  t.textContent=m;
+  t.classList.add('s');
+  clearTimeout(toast.h);
+  toast.h=setTimeout(()=>t.classList.remove('s'),3500);
+}
+
+function hl(i,on){
+  S[i].g.traverse(o=>{
+    const m=o.material;
+    if(!o.isMesh||!m||!m.emissive||o.userData.btn!==undefined)return;
+    if(o.userData.e0===undefined)o.userData.e0=m.emissive.getHex();
+    if(o.userData.e0===0){
+      if(on)m.emissive.copy(m.color).multiplyScalar(.28);
+      else m.emissive.setHex(0);
+    }
+  });
+  S[i].ring.visible=on;
+}
+
+function go(i){
+  if(cur>=0&&cur!==i)hl(cur,false);
+  cur=i;
+  hl(i,true);
+  flyTo(i);
+  showPanel(i);
+  chipsUI();
+}
+
+function closePanel(){
+  $('#panel').classList.remove('o');
+}
+
+function showPanel(i){
+  const d=S[i][lang], u=L[lang], pn=$('#panel');
+  pn.innerHTML=
+    '<div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start">' +
+      '<h2>'+S[i].ic+' '+d.t+'</h2>' +
+      '<button class="b" id="pX" aria-label="Close">✕</button>' +
+    '</div>' +
+    '<ul>'+d.f.map(f=>'<li>'+f+'</li>').join('')+'</ul>' +
+    '<div class="tk">💡 <b>'+u.takeaway+':</b> '+d.k+'</div>' +
+    '<h3>'+u.share+'</h3>' +
+    '<p>'+u.reflect+'</p>' +
+    '<textarea id="tx" rows="2"></textarea>' +
+    '<button class="b p" id="sv">'+u.send+'</button>' +
+    '<div id="nt"></div>';
+
+  pn.classList.add('o');
+  pn.scrollTop=0;
+  $('#pX').onclick=closePanel;
+
+  const ln=()=>{
+    $('#nt').innerHTML=(notes[i]||[]).map(n=>'<div class="tk" style="background:var(--bg);color:var(--ink)">💬 '+esc(n)+'</div>').join('');
+  };
+  ln();
+
+  $('#sv').onclick=()=>{
+    const v=$('#tx').value.trim();
+    if(!v)return;
+    (notes[i]=notes[i]||[]).push(v);
+    $('#tx').value='';
+    ln();
+    toast(u.saved);
+  };
+}
+
+/* ========== ИНТЕРФЕЙС ЖӘНЕ ТІЛ АУЫСТЫРУ ========== */
+function chipsUI(){
+  $('#chips').innerHTML=S.map((s,i)=>'<button class="b'+(i===cur?' on':'')+'" data-i="'+i+'">'+s.ic+' '+s[lang].n+'</button>').join('');
+}
+$('#chips').onclick=e=>{
+  const b=e.target.closest('button');
+  if(b)go(+b.dataset.i);
+};
+$('#bTg').onclick=()=>{
+  const c=$('#bar').classList.toggle('c');
+  $('#bTg').textContent=c?'▴':'▾';
+};
+$('#bL').onclick=()=>{
+  lang=lang==='kk'?'en':'kk';
+  ui();
+};
+$('#bVR').onclick=()=>enterXR('immersive-vr');
+$('#bAR').onclick=()=>enterXR('immersive-ar');
+
+function renderIntro(){
+  const el=$('#intro');
+  if(!el)return;
+  const u=L[lang];
+  el.innerHTML=
+    '<div class="card">' +
+      '<h1>'+u.title+'</h1>' +
+      '<p class="m">'+u.sub+'</p>' +
+      '<h3>'+u.goalH+'</h3>' +
+      '<p>'+u.goal+'</p>' +
+      '<h3>'+u.objH+'</h3>' +
+      '<ol>'+S.map(s=>'<li>'+s[lang].t+'</li>').join('')+'</ol>' +
+      '<p class="m">'+u.hint+'</p>' +
+      '<div style="display:flex;gap:8px;flex-wrap:wrap">' +
+        '<button class="b p" id="go">'+u.start+'</button>' +
+        '<button class="b" id="il">'+(lang==='kk'?'EN':'ҚАЗ')+'</button>' +
+      '</div>' +
+    '</div>';
+  $('#go').onclick=()=>el.remove();
+  $('#il').onclick=()=>{lang=lang==='kk'?'en':'kk';ui()};
+}
+
+function ui(){
+  const u=L[lang];
+  document.documentElement.lang=lang;
+  document.querySelectorAll('[data-k]').forEach(e=>e.textContent=u[e.dataset.k]);
+  $('#bL').textContent=lang==='kk'?'EN':'ҚАЗ';
+  $('#hint').textContent=u.hint;
+  chipsUI();
+  S.forEach(drawLab);
+  if(cur>=0&&$('#panel').classList.contains('o'))showPanel(cur);
+  renderIntro();
+}
+ui();
+
+/* ========== WebXR (VR / AR) ========== */
+async function enterXR(mode){
+  if(!navigator.xr){toast(L[lang].noXR);return;}
+  try{
+    if(!await navigator.xr.isSessionSupported(mode)){toast(L[lang].noXR);return;}
+    const ses=await navigator.xr.requestSession(mode,{optionalFeatures:['local-floor','bounded-floor']});
+    ar=mode==='immersive-ar';
+    R.xr.setReferenceSpaceType('local-floor');
+    await R.xr.setSession(ses);
+    inXR=true;
+    tw=null;
+    if(ar){
+      sky.visible=ground.visible=false;
+      scene.fog=null;
+      world.scale.setScalar(.04);
+      world.position.set(0,0,-1.8);
+    }
+    ses.addEventListener('end',()=>{
+      inXR=false;
+      sky.visible=ground.visible=true;
+      scene.fog=fog;
+      world.scale.setScalar(1);
+      world.position.set(0,0,0);
+      cam.position.set(0,1.65,0);
+      cam.quaternion.identity();
+    });
+  }catch(err){
+    toast(L[lang].noXR);
+  }
+}
+
+function xrSel(c){
+  tmp.identity().extractRotation(c.matrixWorld);
+  rc.ray.origin.setFromMatrixPosition(c.matrixWorld);
+  rc.ray.direction.set(0,0,-1).applyMatrix4(tmp);
+  let h=rc.intersectObjects(labels)[0];
+  if(h){go(h.object.userData.btn);return;}
+  if(!ar){
+    h=rc.intersectObject(ground)[0];
+    if(h){
+      const p=clampPos(h.point.x,h.point.z);
+      rig.position.set(p[0],0,p[1]);
+    }
+  }
+}
+
+if(navigator.xr){
+  ['immersive-vr','immersive-ar'].forEach((m,k)=>navigator.xr.isSessionSupported(m).then(ok=>{if(!ok)$(k?'#bAR':'#bVR').style.opacity=.55}).catch(()=>{}));
+}else{
+  $('#bVR').style.opacity=$('#bAR').style.opacity=.55;
+}
+
+/* ========== НЕГІЗГІ АНИМАЦИЯ ЦИКЛІ ========== */
+const clock=new T3.Clock();
+R.setAnimationLoop(()=>{
+  const dt=Math.min(.05,clock.getDelta()),t=clock.elapsedTime;
+  if(!R.xr.isPresenting){
+    move(dt);
+    stepTw(dt);
+  }
+  rig.rotation.y=yaw;
+  if(!R.xr.isPresenting)cam.rotation.x=pitch;
+  cam.getWorldPosition(v3);
+  const cp=v3.clone();
+  S.forEach((s,i)=>{
+    s.disc.material.opacity=.2+.08*Math.sin(t*2+i);
+    s.lb.getWorldPosition(v3);
+    s.lb.lookAt(cp.x,v3.y,cp.z);
+    s.lb.position.y=3.2+Math.sin(t*2+i)*.15;
+    if(s.ring.visible)s.ring.scale.setScalar(1+.04*Math.sin(t*4));
+  });
+  tick.forEach(f=>f(t));
+  fl.rotation.y=Math.sin(t)*.15;
+  R.render(scene,cam);
+});
+})();
+</script>
+</body>
+</html>
